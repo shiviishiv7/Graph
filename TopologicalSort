@@ -1,0 +1,56 @@
+
+public class TopologicalSort {
+    public static void main(String[] args) {
+    
+        HashMap<Character,ArrayList<Character>>graph = new HashMap<>();
+        insert(graph,'A','B');
+        insert(graph,'A','C');
+        insert(graph,'A','D');
+        insert(graph,'B','C');
+        insert(graph,'B','F');
+        insert(graph,'B','E');
+        insert(graph,'B','D');
+        insert(graph,'C','E');
+        insert(graph,'C','F');
+        insert(graph,'D','E');
+        insert(graph,'D','G');
+        insert(graph,'E','G');
+        insert(graph,'F','G');
+       
+        insert(graph, 'G');
+        HashSet<Character> visited = new HashSet<>();
+        bsf(graph,visited);
+    }
+    
+
+    private static void insert(HashMap<Character, ArrayList<Character>> graph, char c, char c0) {
+       graph.putIfAbsent(c, new ArrayList<>());
+       graph.get(c).add(c0);
+    }
+
+    private static void bsf(HashMap<Character, ArrayList<Character>> graph, HashSet<Character> visited) {
+        Queue<Character> q =   new LinkedList<>();
+        q.add('A');
+        
+        while (!q.isEmpty()) {            
+            int size = q.size();
+            for (int i = 0; i < size; i++) {
+                Character remove = q.remove();
+                visited.add(remove);
+                System.out.println(remove);
+                
+                ArrayList<Character> get = graph.get(remove);
+                for (Character character : get) {
+                    if(visited.contains(character))continue;
+                    visited.add(character);
+                    q.add(character);
+                }
+            }
+        }
+    }
+
+    private static void insert(HashMap<Character, ArrayList<Character>> graph, char c) {
+               graph.putIfAbsent(c, new ArrayList<>());
+    }
+    
+}
