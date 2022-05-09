@@ -1,0 +1,89 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.mygraph;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+
+/**
+ *
+ * @author shiv
+ */
+public class GraphColoring {
+    public static void main(String[] args) {
+    
+        HashMap<Character,ArrayList<Character>>graph = new HashMap<>();
+        insert(graph,'A','B');
+        insert(graph,'A','C');
+        insert(graph,'A','D');
+        
+        insert(graph,'B','C');
+        insert(graph,'B','F');
+        insert(graph,'B','E');
+        
+        insert(graph,'B','D');
+        insert(graph,'C','E');
+        insert(graph,'C','F');
+        
+        insert(graph,'D','E');
+        insert(graph,'D','G');
+        insert(graph,'E','G');
+        insert(graph,'F','G');
+       
+        insert(graph, 'G');
+        HashSet<Character> visited = new HashSet<>();
+        bsf(graph,visited);
+    }
+    
+
+    private static void insert(HashMap<Character, ArrayList<Character>> graph, char c, char c0) {
+       graph.putIfAbsent(c, new ArrayList<>());
+       graph.putIfAbsent(c0, new ArrayList<>());
+       graph.get(c).add(c0);
+       graph.get(c0).add(c);
+    }
+
+    private static void bsf(HashMap<Character, ArrayList<Character>> graph, HashSet<Character> visited) {
+        Queue<Character> q =   new LinkedList<>();
+        q.add('A');
+        HashMap<Character,Integer> color = new HashMap<>();
+        
+        while (!q.isEmpty()) {            
+            
+                Character remove = q.remove();
+                visited.add(remove);
+              //  System.out.println(remove);
+                var left_color =  new boolean[7];
+                ArrayList<Character> get = graph.get(remove);
+                for (Character character : get) {
+                    if(visited.contains(character)){
+                        if(color.containsKey(character))
+                        left_color[color.get(character)]=true;
+                        continue;
+                    }
+                    visited.add(character);
+                    q.add(character);
+                }
+                for (int j = 0; j < left_color.length; j++) {
+                    if(!left_color[j]){
+                        color.put(remove, j);
+                        break;
+                    }
+                }
+            }
+        
+        for (Character character : color.keySet()) {
+            System.out.println(character+"\t"+color.get(character));
+        }
+    }
+
+    private static void insert(HashMap<Character, ArrayList<Character>> graph, char c) {
+               graph.putIfAbsent(c, new ArrayList<>());
+    }
+    
+}
